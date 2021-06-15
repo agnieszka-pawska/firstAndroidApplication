@@ -1,24 +1,29 @@
 package com.example.firstapplication
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-
 import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import com.example.firstapplication.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
 
-        val button: Button = findViewById(R.id.counter_button)
-        val textView: TextView = findViewById(R.id.textView)
+        changeTextInTextViewWhenClickButton(binding.textView, binding.counterButton)
+
+        setContentView(binding.root)
+    }
+
+    private fun changeTextInTextViewWhenClickButton(textView: TextView, button: Button) {
         var counter = 0
 
-        button.setOnClickListener(View.OnClickListener {
+        button.setOnClickListener {
             counter++
-            textView.text = getString(R.string.counter, counter.toString())
-        })
+            textView.text = getString(R.string.counter, counter)
+        }
     }
 }
