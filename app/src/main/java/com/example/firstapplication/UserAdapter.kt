@@ -11,11 +11,10 @@ class UserAdapter(
     private var users: MutableList<User>
 ): RecyclerView.Adapter<UserAdapter.ViewHolder>() {
 
-    lateinit var mRecyclerView: RecyclerView
-
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val userNameView: TextView = view.findViewById(R.id.user_name)
         private val userEmailView: TextView = view.findViewById(R.id.user_email)
+        val deleteUserButton: Button =  itemView.findViewById(R.id.delete_user_button)
 
         fun bind(name: String, email: String) {
             userNameView.text = name
@@ -24,20 +23,19 @@ class UserAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        mRecyclerView = parent.findViewById<View>(R.id.recycler_view) as RecyclerView
-
         val itemView: View = LayoutInflater.from(parent.context)
             .inflate(R.layout.user_list_item, parent, false)
 
-        val deleteUserButton: Button =  itemView.findViewById(R.id.delete_user_button)
-        deleteUserButton.setOnClickListener {
-            remove(itemView)
-        }
         return ViewHolder(itemView)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(users[position].name, users[position].email)
+
+        val deleteUserButton: Button =  holder.deleteUserButton
+        deleteUserButton.setOnClickListener {
+            remove(position)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -46,13 +44,12 @@ class UserAdapter(
 
     fun add(user: User) {
         users.add(user)
-        notifyItemInserted(users.size - 1)
+        notifyItemInserted(users.lastIndex)
     }
 
-    private fun remove(itemView: View) {
-        val childAdapterPosition = mRecyclerView.getChildAdapterPosition(itemView)
-        users.removeAt(childAdapterPosition)
-        notifyItemRemoved(childAdapterPosition)
+    private fun remove(position: Int) {
+        users.removeAt(position)
+        notifyItemRemoved(position)
     }
 
 }
