@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         usersViewModel.users.observe(
             this,
             { updatedUserList ->
-                recyclerView.adapter = UserAdapter(updatedUserList.toMutableList())
+                recyclerView.adapter = UserAdapter(updatedUserList.toMutableList(), usersViewModel)
             }
         )
         actionOnNewUserButton()
