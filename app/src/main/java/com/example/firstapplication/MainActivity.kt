@@ -1,13 +1,14 @@
 package com.example.firstapplication
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.firstapplication.databinding.ActivityMainBinding
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var usersViewModel: UserListViewModel
+    private val usersViewModel: UserListViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -15,13 +16,15 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val recyclerView = binding.recyclerView
+        val userAdapter = UserAdapter(usersViewModel.users.value?.toMutableList() ?: mutableListOf()) { userId -> usersViewModel.remove(userId) }
 
-        usersViewModel = UserListViewModel()
+        val recyclerView = binding.recyclerView
+        recyclerView.adapter = userAdapter
+
         usersViewModel.users.observe(
             this,
-            { updatedUserList ->
-                recyclerView.adapter = UserAdapter(updatedUserList.toMutableList(), usersViewModel)
+            {
+                userAdapter.notifyDataSetChanged(it)
             }
         )
         actionOnNewUserButton()
