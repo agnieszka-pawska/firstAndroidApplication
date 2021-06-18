@@ -1,29 +1,20 @@
 package com.example.firstapplication
 
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 class UsersApiClient {
 
-    fun fetchUsers(updateList: (List<User>) -> Unit) {
+    fun fetchUsers(): Single<List<User>> {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://jsonplaceholder.typicode.com/")
             .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
             .build()
 
-        val call = retrofit.create(UsersApi::class.java).getUsers()
-
-        call.enqueue(object : Callback<List<User>> {
-            override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
-                updateList(response.body() ?: emptyList())
-            }
-
-            override fun onFailure(call: Call<List<User>>, t: Throwable) {
-                TODO("Not yet implemented")
-            }
-        })
+        return retrofit.create(UsersApi::class.java).getUsers()
     }
 }

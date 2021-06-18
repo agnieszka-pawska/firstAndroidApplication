@@ -1,6 +1,8 @@
 package com.example.firstapplication
 
 import androidx.lifecycle.MutableLiveData
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 class UserRepository {
 
@@ -9,7 +11,10 @@ class UserRepository {
     private var users: MutableLiveData<List<User>> = MutableLiveData(emptyList())
 
     fun fetchUsers() {
-        usersApiClient.fetchUsers { users -> update(users) }
+        usersApiClient.fetchUsers()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(this::update)
     }
 
     fun getUsers(): MutableLiveData<List<User>> {
