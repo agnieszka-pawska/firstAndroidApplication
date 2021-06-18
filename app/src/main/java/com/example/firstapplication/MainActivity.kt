@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         val recyclerView = binding.recyclerView
         recyclerView.adapter = userAdapter
 
-        usersViewModel.users.observe(
+        usersViewModel.getUsers().observe(
             this,
             {
                 userAdapter.notifyDataSetChanged(it)
