@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val userAdapter = UserAdapter(usersViewModel.users.value?.toMutableList() ?: mutableListOf()) { userId -> usersViewModel.remove(userId) }
+        val userAdapter = UserAdapter { userId -> usersViewModel.remove(userId) }
 
         val recyclerView = binding.recyclerView
         recyclerView.adapter = userAdapter

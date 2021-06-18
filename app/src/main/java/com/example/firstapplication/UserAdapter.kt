@@ -4,13 +4,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.recyclerview.widget.ListAdapter
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
 class UserAdapter(
-    private var users: MutableList<User>,
     private val removeUserFromViewModel: (userId: String) -> Unit
-): RecyclerView.Adapter<UserAdapter.ViewHolder>() {
+): ListAdapter<User, UserAdapter.ViewHolder>(UsersDiffCallback) {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val userNameView: TextView = view.findViewById(R.id.user_name)
@@ -31,16 +32,13 @@ class UserAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(users[position].name, users[position].email)
+        val user = getItem(position)
+        holder.bind(user.name, user.email)
 
         val deleteUserButton: Button =  holder.deleteUserButton
         deleteUserButton.setOnClickListener {
-            remove(users[position].id)
+            remove(user.id)
         }
-    }
-
-    override fun getItemCount(): Int {
-        return users.size
     }
 
     private fun remove(userId: String) {
@@ -48,7 +46,16 @@ class UserAdapter(
     }
 
     fun notifyDataSetChanged(usersList: List<User>) {
-        users = usersList.toMutableList()
-        notifyDataSetChanged()
+        submitList(usersList)
+    }
+}
+
+object UsersDiffCallback: DiffUtil.ItemCallback<User>() {
+    override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
+        return oldItem.id == newItem.id
+    }
+
+    override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
+        return oldItem == newItem
     }
 }
