@@ -8,13 +8,14 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class UsersApiClient {
 
-    fun fetchUsers(): Single<List<User>> {
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://jsonplaceholder.typicode.com/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
-            .build()
+    private val usersApiClient: UsersApi = Retrofit.Builder()
+        .baseUrl("https://jsonplaceholder.typicode.com/")
+        .addConverterFactory(GsonConverterFactory.create())
+        .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
+        .build()
+        .create(UsersApi::class.java)
 
-        return retrofit.create(UsersApi::class.java).getUsers()
+    fun fetchUsers(): Single<List<User>> {
+        return usersApiClient.getUsers()
     }
 }

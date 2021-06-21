@@ -1,6 +1,6 @@
 package com.example.firstapplication
 
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 
 class UserListViewModel: ViewModel() {
@@ -11,7 +11,7 @@ class UserListViewModel: ViewModel() {
         userRepository.fetchUsers()
     }
 
-    fun getUsers(): MutableLiveData<List<User>> {
+    fun getUsers(): LiveData<List<User>> {
         return userRepository.getUsers()
     }
 
@@ -21,5 +21,10 @@ class UserListViewModel: ViewModel() {
 
     fun remove(userId: String) {
         userRepository.remove(userId)
+    }
+
+    override fun onCleared() {
+        userRepository.clearDisposables()
+        super.onCleared()
     }
 }
