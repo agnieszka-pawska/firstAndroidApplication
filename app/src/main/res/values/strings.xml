@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">FirstApplication</string>
-    <string name="counter">You clicked %1$s times</string>
+    <string name="counter">You clicked %d times</string>
+    <string name="delete">delete</string>
 </resources>
