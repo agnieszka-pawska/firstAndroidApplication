@@ -2,23 +2,17 @@ package com.example.firstapplication
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 
 class UserRepository {
 
     private val usersApiClient: UsersApiClient = UsersApiClient()
 
     private var users: MutableLiveData<List<User>> = MutableLiveData(emptyList())
-    private var disposables: CompositeDisposable = CompositeDisposable()
 
-    fun fetchUsers() {
-        usersApiClient.fetchUsers()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(this::update)
-            .also { disposables.add(it) }
+    suspend fun fetchAndUpdateUsers(): List<User> {
+        val fetchedUsers = usersApiClient.fetchUsers()
+        update(fetchedUsers)
+        return fetchedUsers
     }
 
     fun getUsers(): LiveData<List<User>> {
@@ -43,10 +37,6 @@ class UserRepository {
             updatedList.remove(userToRemove)
             users.value = updatedList
         }
-    }
-
-    fun clearDisposables() {
-        disposables.clear()
     }
 
     private fun update(userList: List<User>) {

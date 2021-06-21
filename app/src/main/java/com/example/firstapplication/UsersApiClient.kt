@@ -1,6 +1,5 @@
 package com.example.firstapplication
 
-import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -15,7 +14,7 @@ class UsersApiClient {
         .build()
         .create(UsersApi::class.java)
 
-    fun fetchUsers(): Single<List<User>> {
+    suspend fun fetchUsers(): List<User> {
         return usersApiClient.getUsers()
     }
 }

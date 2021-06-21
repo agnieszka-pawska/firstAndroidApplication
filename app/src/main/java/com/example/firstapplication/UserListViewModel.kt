@@ -2,13 +2,17 @@ package com.example.firstapplication
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 
 class UserListViewModel: ViewModel() {
 
     private val userRepository: UserRepository = UserRepository()
 
     init {
-        userRepository.fetchUsers()
+        viewModelScope.launch {
+            userRepository.fetchAndUpdateUsers()
+        }
     }
 
     fun getUsers(): LiveData<List<User>> {
@@ -21,10 +25,5 @@ class UserListViewModel: ViewModel() {
 
     fun remove(userId: String) {
         userRepository.remove(userId)
-    }
-
-    override fun onCleared() {
-        userRepository.clearDisposables()
-        super.onCleared()
     }
 }
