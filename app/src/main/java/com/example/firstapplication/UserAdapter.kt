@@ -8,13 +8,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class UserAdapter(
-    private var users: MutableList<User>
+    private var users: MutableList<User>,
+    private val removeUserFromViewModel: (userId: String) -> Unit
 ): RecyclerView.Adapter<UserAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val userNameView: TextView = view.findViewById(R.id.user_name)
         private val userEmailView: TextView = view.findViewById(R.id.user_email)
-        val deleteUserButton: Button =  itemView.findViewById(R.id.delete_user_button)
+        val deleteUserButton: Button = itemView.findViewById(R.id.delete_user_button)
 
         fun bind(name: String, email: String) {
             userNameView.text = name
@@ -34,7 +35,7 @@ class UserAdapter(
 
         val deleteUserButton: Button =  holder.deleteUserButton
         deleteUserButton.setOnClickListener {
-            remove(position)
+            remove(users[position].id)
         }
     }
 
@@ -42,14 +43,12 @@ class UserAdapter(
         return users.size
     }
 
-    fun add(user: User) {
-        users.add(user)
-        notifyItemInserted(users.lastIndex)
+    private fun remove(userId: String) {
+        removeUserFromViewModel(userId)
     }
 
-    private fun remove(position: Int) {
-        users.removeAt(position)
-        notifyItemRemoved(position)
+    fun notifyDataSetChanged(usersList: List<User>) {
+        users = usersList.toMutableList()
+        notifyDataSetChanged()
     }
-
 }

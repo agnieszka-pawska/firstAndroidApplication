@@ -1,12 +1,14 @@
 package com.example.firstapplication
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.firstapplication.databinding.ActivityMainBinding
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private val usersViewModel: UserListViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -14,21 +16,24 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val userAdapter = UserAdapter(
-            mutableListOf(
-                User("user-id-1", "user-name-1", "user-1-email"),
-                User("user-id-2", "user-name-2", "user-2-email"),
-                User("user-id-3", "user-name-3", "user-3-email"),
-                User("user-id-4", "user-name-4", "user-4-email"),
-                User("user-id-5", "user-name-5", "user-5-email")
-            )
-        )
+        val userAdapter = UserAdapter(usersViewModel.users.value?.toMutableList() ?: mutableListOf()) { userId -> usersViewModel.remove(userId) }
+
         val recyclerView = binding.recyclerView
         recyclerView.adapter = userAdapter
 
+        usersViewModel.users.observe(
+            this,
+            {
+                userAdapter.notifyDataSetChanged(it)
+            }
+        )
+        actionOnNewUserButton()
+    }
+
+    private fun actionOnNewUserButton() {
         val newUserButton = binding.newUserButton
         newUserButton.setOnClickListener {
-            userAdapter.add(generateNewUser())
+            usersViewModel.add(generateNewUser())
         }
     }
 
