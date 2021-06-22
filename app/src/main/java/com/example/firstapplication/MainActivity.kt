@@ -1,5 +1,6 @@
 package com.example.firstapplication
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.firstapplication.databinding.ActivityMainBinding
@@ -16,7 +17,10 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val userAdapter = UserAdapter { userId -> usersViewModel.remove(userId) }
+        val userAdapter = UserAdapter(
+            { userId -> usersViewModel.remove(userId) },
+            { user -> openUserDetailsActivity(user) }
+        )
 
         val recyclerView = binding.recyclerView
         recyclerView.adapter = userAdapter
@@ -28,6 +32,15 @@ class MainActivity : AppCompatActivity() {
             }
         )
         actionOnNewUserButton()
+    }
+
+    private fun openUserDetailsActivity(user: User) {
+        val intent = Intent(this, UserDetailsActivity::class.java).apply {
+            putExtra(UserDetailsActivity.EXTRA_ID_KEY, user.id)
+            putExtra(UserDetailsActivity.EXTRA_NAME_KEY, user.name)
+            putExtra(UserDetailsActivity.EXTRA_EMAIL_KEY, user.email)
+        }
+        startActivity(intent)
     }
 
     private fun actionOnNewUserButton() {

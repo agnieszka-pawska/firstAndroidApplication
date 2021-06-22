@@ -8,6 +8,8 @@ object KoinModuleFactory {
    val appModule =  module {
        factory { UsersApiClient() }
        single { UserRepository(get()) }
+       single { ToDoListRepository(get()) }
        viewModel { UserListViewModel(get()) }
+       viewModel { ToDoListViewModel(get()) }
     }
 }

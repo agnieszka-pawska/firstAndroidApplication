@@ -2,6 +2,7 @@ package com.example.firstapplication
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import java.lang.Exception
 
 class UserRepository(
     private val usersApiClient: UsersApiClient
@@ -10,12 +11,18 @@ class UserRepository(
     private var users: MutableLiveData<List<User>> = MutableLiveData(emptyList())
 
     suspend fun fetchAndUpdateUsers(): List<User> {
-        if (users.value.isNullOrEmpty()) {
+        return try {
             val fetchedUsers = usersApiClient.fetchUsers()
             update(fetchedUsers)
-            return fetchedUsers
+            fetchedUsers
+        } catch (e: Exception) {
+            println("UsersApiClient exception, cause: ${e.cause}")
+            val hardcodedUser = listOf(
+                User("1234", "user-name", "user-email")
+            )
+            update(hardcodedUser)
+            hardcodedUser
         }
-        return users.value!!
     }
 
     fun getUsers(): LiveData<List<User>> {

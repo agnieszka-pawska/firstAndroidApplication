@@ -14,4 +14,8 @@ class UsersApiClient {
     suspend fun fetchUsers(): List<User> {
         return usersApiClient.getUsers()
     }
+
+    suspend fun fetchToDoList(userId: String): List<ToDo> {
+        return usersApiClient.getToDoList(userId)
+    }
 }

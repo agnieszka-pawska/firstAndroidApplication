@@ -1,7 +1,5 @@
 package com.example.firstapplication
 
-import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +10,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
 class UserAdapter(
-    private val onRemoveUser: (userId: String) -> Unit
+    private val onRemoveUser: (userId: String) -> Unit,
+    private val onClick: (user: User) -> Unit
 ): ListAdapter<User, UserAdapter.ViewHolder>(UsersDiffCallback) {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -37,26 +36,13 @@ class UserAdapter(
         val user = getItem(position)
         holder.bind(user.name, user.email)
 
-        val deleteUserButton: Button =  holder.deleteUserButton
-        deleteUserButton.setOnClickListener {
-            remove(user.id)
+        holder.deleteUserButton.setOnClickListener {
+            onRemoveUser(user.id)
         }
 
         holder.itemView.setOnClickListener {
-            openUserDetailsActivity(it.context, user)
+            onClick(user)
         }
-    }
-
-    private fun openUserDetailsActivity(context: Context, user: User) {
-        val intent = Intent(context, UserDetailsActivity::class.java).apply {
-            putExtra(UserDetailsActivity.EXTRA_NAME_KEY, user.name)
-            putExtra(UserDetailsActivity.EXTRA_EMAIL_KEY, user.email)
-        }
-        context.startActivity(intent)
-    }
-
-    private fun remove(userId: String) {
-        onRemoveUser(userId)
     }
 
     fun notifyDataSetChanged(usersList: List<User>) {

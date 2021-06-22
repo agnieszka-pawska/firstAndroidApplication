@@ -2,4 +2,6 @@
     <string name="app_name">FirstApplication</string>
     <string name="counter">You clicked %d times</string>
     <string name="delete">delete</string>
+    <string name="back">BACK</string>
+    <string name="todo_list">TODO LIST</string>
 </resources>
