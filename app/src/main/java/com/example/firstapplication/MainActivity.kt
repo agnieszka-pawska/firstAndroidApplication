@@ -3,8 +3,8 @@ package com.example.firstapplication
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.firstapplication.databinding.ActivityMainBinding
-import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.UUID
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding

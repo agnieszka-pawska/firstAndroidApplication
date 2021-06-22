@@ -10,9 +10,12 @@ class UserRepository(
     private var users: MutableLiveData<List<User>> = MutableLiveData(emptyList())
 
     suspend fun fetchAndUpdateUsers(): List<User> {
-        val fetchedUsers = usersApiClient.fetchUsers()
-        update(fetchedUsers)
-        return fetchedUsers
+        if (users.value.isNullOrEmpty()) {
+            val fetchedUsers = usersApiClient.fetchUsers()
+            update(fetchedUsers)
+            return fetchedUsers
+        }
+        return users.value!!
     }
 
     fun getUsers(): LiveData<List<User>> {
