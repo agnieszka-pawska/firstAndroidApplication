@@ -5,9 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
-class UserListViewModel: ViewModel() {
-
-    private val userRepository: UserRepository = UserRepository()
+class UserListViewModel(
+    private val userRepository: UserRepository
+): ViewModel() {
 
     init {
         viewModelScope.launch {

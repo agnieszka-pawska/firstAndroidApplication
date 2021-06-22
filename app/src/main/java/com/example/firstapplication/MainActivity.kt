@@ -1,14 +1,14 @@
 package com.example.firstapplication
 
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.firstapplication.databinding.ActivityMainBinding
-import java.util.*
+import org.koin.android.viewmodel.ext.android.viewModel
+import java.util.UUID
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private val usersViewModel: UserListViewModel by viewModels()
+    private val usersViewModel: UserListViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
