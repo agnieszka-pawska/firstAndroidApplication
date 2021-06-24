@@ -7,51 +7,53 @@
 
     <TextView
         android:id="@+id/user_email"
-        android:layout_width="165dp"
+        android:layout_width="175dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        tools:text="user email"
+        android:layout_marginStart="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="@+id/delete_user_button"
         app:layout_constraintBottom_toBottomOf="@+id/delete_user_button"
+        app:layout_constraintStart_toEndOf="@+id/user_name"
         app:layout_constraintEnd_toStartOf="@+id/delete_user_button"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/user_name"
-        app:layout_constraintTop_toTopOf="@+id/delete_user_button"
-        android:gravity="center" />
+        tools:text="user email" />
 
     <Button
         android:id="@+id/delete_user_button"
         android:layout_width="69dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
         android:text="@string/delete"
         android:textSize="09sp"
         android:textStyle="bold"
-        app:backgroundTint="#EA3434"
-        app:layout_constraintEnd_toStartOf="@+id/user_email"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/user_email" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/user_email"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:backgroundTint="#EA3434" />
 
     <TextView
         android:id="@+id/user_name"
-        android:layout_width="85dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginRight="8dp"
-        tools:text="user name"
+        android:layout_marginEnd="8dp"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="@+id/user_email"
         app:layout_constraintBottom_toBottomOf="@+id/user_email"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/user_email"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/user_email"
-        android:gravity="center" />
+        tools:text="user name" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
